@@ -2,7 +2,7 @@ import { storageService } from './async-storage.js'
 import { utilService } from './utils-service.js'
 
 
-const labels = ['On wheels', 'Box game', 'Art', 'Baby', 'Doll', 'Puzzle',
+export const dataLabels = ['On wheels', 'Box game', 'Art', 'Baby', 'Doll', 'Puzzle',
     'Outdoor', 'Battery Powered']
 
 const toyNames = ['Barbie', 'Ken', 'Ted', 'Puffy', 'Kane', 'John', 'Rey', 'Skater', 'Jinx', 'Lego']
@@ -15,12 +15,44 @@ export const toysService = {
     get,
     remove,
     save,
+    getEmptyToy,
+    getDefaultFilter,
 }
 // For Debug (easy access from console):
 window.cs = toysService
 
-function query(filterBy) {
+function query(filterBy = {}) {
     return storageService.query(TOYS_KEY)
+        .then(toys => {
+            if (filterBy.name) {
+                toys = toys.filter(toy => {
+                    return toy.name.toLowerCase().includes(filterBy.name.toLowerCase())
+                })
+            }
+            if (filterBy.inStock === true) {
+                toys = toys.filter(toy => toy.inStock)
+            }
+            else if (filterBy.inStock === false) {
+                toys = toys.filter(toy => !toy.inStock)
+            }
+            if (filterBy.labels && filterBy.labels.length) {
+                toys = toys.filter(toy => {
+                    return filterBy.labels.some(label => toy.labels.includes(label))
+                })
+            }
+            if (filterBy.sortBy === 'name') {
+                toys = toys.sort((toy1, toy2) => {
+                    return toy1.name.localeCompare(toy2.name)
+                })
+            }
+            if (filterBy.sortBy === 'price') {
+                toys = toys.sort((toy1, toy2) => toy1.price - toy2.price)
+            }
+            if (filterBy.sortBy === 'createdAt') {
+                toys = toys.sort((toy1, toy2) => toy2.createdAt - toy1.createdAt)
+            }
+            return toys
+        })
 }
 
 function get(toyId) {
@@ -43,9 +75,14 @@ function save(toy) {
 
 
 
-// function getDefaultFilter() {
-//     return { txt: '', importance: 0, isDone: null }
-// }
+function getDefaultFilter() {
+    return {
+        name: '',
+        inStock: null,
+        labels: [],
+        sortBy: ''
+    }
+}
 
 // function getFilterFromSearchParams(searchParams) {
 //     const defaultFilter = getDefaultFilter()
@@ -72,7 +109,7 @@ function _createToys() {
 
 function _createToy(name, price) {
     const toy = getEmptyToy(name, price)
-    let labelsCopy = [...labels]
+    let labelsCopy = [...dataLabels]
     toy._id = utilService.makeId()
     for (let i = 0; i < 3; i++) {
         const randomIdx = utilService.getRandomIntInclusive(0, labelsCopy.length - 1)

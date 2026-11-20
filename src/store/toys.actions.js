@@ -1,10 +1,10 @@
 
 import { toysService } from "../services/toy.service";
-import { SET_TOYS, ADD_TOY, DELETE_TOY, TOGGLE_STOCK, UPDATE_TOY } from "./reducers/toys.reducers";
+import { SET_TOYS, ADD_TOY, DELETE_TOY, TOGGLE_STOCK, UPDATE_TOY, FILTER_BY } from "./reducers/toys.reducers";
 import { store } from "./store.js";
 
-export function loadToys() {
-    return toysService.query()
+export function loadToys(filterBy) {
+    return toysService.query(filterBy)
         .then(toys => {
             store.dispatch({ type: SET_TOYS, toys })
         })
@@ -43,6 +43,11 @@ export function saveToy(toy) {
             console.log('error:', err)
             throw err
         })
+}
+
+export function updateFilterBy(filterBy) {
+    store.dispatch({ type: FILTER_BY, filterBy })
+
 }
 
 export function toggleStock(toyId) {

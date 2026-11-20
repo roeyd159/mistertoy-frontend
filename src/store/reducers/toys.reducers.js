@@ -1,5 +1,7 @@
 // import { toysService } from "../../services/toy.service.js";
 
+import { toysService } from "../../services/toy.service"
+
 
 export const SET_TOYS = 'SET_TOYS'
 export const IS_LOADING = 'IS_LOADING'
@@ -7,10 +9,13 @@ export const DELETE_TOY = 'DELETE_TOY'
 export const ADD_TOY = 'ADD_TOY'
 export const UPDATE_TOY = 'UPDATE_TOY'
 export const TOGGLE_STOCK = 'TOGGLE_STOCK'
+export const FILTER_BY = 'FILTER_BY'
+
 
 const initialState = {
     toys: [],
-    isLoading: false
+    isLoading: false,
+    filterBy: toysService.getDefaultFilter()
 }
 
 export function toysReducer(state = initialState, cmd) {
@@ -57,6 +62,9 @@ export function toysReducer(state = initialState, cmd) {
                     }
                 })
             }
+
+        case 'FILTER_BY':
+            return { ...state, filterBy: cmd.filterBy }
 
 
         case 'IS_LOADING':
