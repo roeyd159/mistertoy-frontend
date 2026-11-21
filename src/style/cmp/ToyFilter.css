@@ -1,0 +1,25 @@
+.dropdown-wrapper {
+    position: relative;
+}
+
+.labels-checkbox {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    z-index: 10;
+    width: 120px;
+}
+
+.filter-wrap {
+    display: flex;
+    gap: 20px;
+}
+
+.label-div {
+    display: flex;
+    gap: 3px;
+    padding: 3px;
+    border: 1px black solid;
+    min-width: 80px;
+}

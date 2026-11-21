@@ -10,15 +10,14 @@ function App() {
 
     <Provider store={store}>
       <Router>
-        <section className="app-main-layout">
+        <main className="app-main-layout">
           <Routes>
             <Route path="toys/" element={<ToysIndex />} />
             <Route path="toys/:toyId" element={<ToyDetails />} />
             <Route path="toys/edit/:toyId" element={<ToyEdit />} />
             <Route path="toys/edit" element={<ToyEdit />} />
           </Routes>
-
-        </section>
+        </main>
       </Router>
     </Provider >
   )

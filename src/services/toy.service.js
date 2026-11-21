@@ -7,6 +7,12 @@ export const dataLabels = ['On wheels', 'Box game', 'Art', 'Baby', 'Doll', 'Puzz
 
 const toyNames = ['Barbie', 'Ken', 'Ted', 'Puffy', 'Kane', 'John', 'Rey', 'Skater', 'Jinx', 'Lego']
 
+const toyImages = {
+    Barbie: '/assets/barbie.png',
+    Lego: '/assets/lego.png',
+    Ken: '/assets/ken.png'
+}
+
 const TOYS_KEY = 'toysDB'
 _createToys()
 
@@ -111,6 +117,7 @@ function _createToy(name, price) {
     const toy = getEmptyToy(name, price)
     let labelsCopy = [...dataLabels]
     toy._id = utilService.makeId()
+    toy.imgUrl = toyImages[name] || ''
     for (let i = 0; i < 3; i++) {
         const randomIdx = utilService.getRandomIntInclusive(0, labelsCopy.length - 1)
         toy.labels.push(labelsCopy[randomIdx])

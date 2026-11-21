@@ -26,11 +26,14 @@ export function ToyDetails() {
     return (
         <section className="toy-details-wrap">
             <h2>{toy.name}</h2>
-            <div>{toy.price}</div>
-            <div>Labels: {toy.labels.map(label => {
-                return <div key={label}>{label}</div>
-
-            })}</div>
+            <img src={toy.imgUrl} alt={toy.name} />
+            <div> Price: {toy.price}</div>
+            <div className="labels-details-wrap">
+                Labels: {toy.labels.map(label => {
+                    return <div key={label}>{label}</div>
+                })}</div>
+            <div className="instock-details">In Stock: {toy.inStock ? '✅' : '❌'}</div>
+            <div>Since: {new Date(toy.createdAt).toLocaleDateString()}</div>
         </section>
     )
 }

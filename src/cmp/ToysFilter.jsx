@@ -4,6 +4,7 @@ import { updateFilterBy } from "../store/toys.actions";
 
 export function ToysFilter({ filterBy }) {
     const [filterByToEdit, setFilterByToEdit] = useState(filterBy)
+    const [isDropOpen, setIsDropOpen] = useState(false)
     const labels = dataLabels
 
 
@@ -16,6 +17,10 @@ export function ToysFilter({ filterBy }) {
         return (() => clearTimeout(timeOutId))
     }, [filterByToEdit])
 
+    function toggleDropDown() {
+        setIsDropOpen(isDropOpen => !isDropOpen)
+
+    }
 
     function handleChange({ target }) {
         const { value, name } = target
@@ -71,18 +76,22 @@ export function ToysFilter({ filterBy }) {
                 <option value="true">In stock</option>
                 <option value="false">Not in stock</option>
             </select>
-            <section className="labels-checkbox">
-                {labels.map(label => {
-                    return <div key={label + 'i'}>
-                        <label htmlFor={label}>{label}</label>
-                        <input onChange={handleChange} key={label} type="checkbox"
-                            name='labels'
-                            id={label}
-                            checked={filterByToEdit.labels.includes(label)}
-                            value={label} />
-                    </div>
-                })}
-            </section>
+            <div className="dropdown-wrapper">
+                <button onClick={toggleDropDown}>Labels</button>
+                {isDropOpen && <section className="labels-checkbox">
+                    {labels.map(label => {
+                        return <div className="label-div" key={label + 'i'}>
+                            <label htmlFor={label}>{label}</label>
+                            <input onChange={handleChange} key={label} type="checkbox"
+                                name='labels'
+                                id={label}
+                                checked={filterByToEdit.labels.includes(label)}
+                                value={label} />
+                        </div>
+                    })}
+                    <button onClick={toggleDropDown}>X</button>
+                </section>}
+            </div>
             <select onChange={handleChange} value={filterByToEdit.sortBy} name="sortBy" id="sortBy">
                 <option value="">All</option>
                 <option value="name">Name</option>

@@ -1,0 +1,15 @@
+.toys-list-sec {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+}
+
+.toy-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    min-height: 200px;
+    width: 250px;
+    align-items: center;
+    gap: 13px;
+}
