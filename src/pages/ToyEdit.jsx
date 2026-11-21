@@ -5,11 +5,13 @@ import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service"
 import { saveToy } from "../store/toys.actions"
 import { useNavigate } from "react-router-dom"
 import { dataLabels } from "../services/toy.service"
+import { useConfirmTabClose } from "../Hooks/useConfirmTabClose.jsx"
 export function ToyEdit() {
 
     const [toyToEdit, setToyToEdit] = useState(toysService.getEmptyToy())
     const { toyId } = useParams()
     const navigate = useNavigate()
+    const setHasUnsavedChanges = useConfirmTabClose()
 
     useEffect(() => {
         if (toyId) {
@@ -31,6 +33,7 @@ export function ToyEdit() {
     function handleChange({ target }) {
         const { value, name } = target
         let toyToReturn
+        setHasUnsavedChanges(true)
         if (name === 'price')
             toyToReturn = { ...toyToEdit, [name]: +value }
 
@@ -73,6 +76,7 @@ export function ToyEdit() {
                 else {
                     showSuccessMsg('Toy Added')
                 }
+                setHasUnsavedChanges(false)
                 navigate("/toys")
 
             })
